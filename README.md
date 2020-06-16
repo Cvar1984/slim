@@ -19,7 +19,7 @@ then go to `/var/www/html` and install depencies
 composer install --no-dev
 yarn install
 ```
-edit `/var/www/html/app/container.php`
+edit `/var/www/html/app/middleware.php`
 
 comment this
 ```php
@@ -41,7 +41,7 @@ then go to `/var/www/html/custom` and install depencies
 composer install --no-dev
 yarn install
 ```
-edit `/var/www/html/app/container.php`
+edit `/var/www/html/app/middleware.php`
 do this
 ```php
 $app->setBasepath('/custom');
