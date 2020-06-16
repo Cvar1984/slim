@@ -19,6 +19,7 @@ final class NotFoundController
                 'app_name' => 'Slim Twig',
                 'intro' => 'Oops, pages not found',
                 'copy_right' => 'Slim Framework, 2020',
+                'button' => 'Fuck go back',
                 'links' => [
                     'home' => '/home',
                     'profile' => '/profile',

@@ -1,11 +1,8 @@
 <?php
 
-use DI\ContainerBuilder;
-use Slim\App;
-
 require_once __DIR__ . '/../vendor/autoload.php';
 
-$containerBuilder = new ContainerBuilder();
+$containerBuilder = new \DI\ContainerBuilder();
 
 // Set up settings
 $containerBuilder->addDefinitions(__DIR__ . '/container.php');
@@ -14,7 +11,7 @@ $containerBuilder->addDefinitions(__DIR__ . '/container.php');
 $container = $containerBuilder->build();
 
 // Create App instance
-$app = $container->get(App::class);
+$app = $container->get(\Slim\App::class);
 
 // Register routes
 (require __DIR__ . '/routes.php')($app);

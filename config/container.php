@@ -18,17 +18,21 @@ return [
     App::class => function (ContainerInterface $container) {
         AppFactory::setContainer($container);
         $app = AppFactory::create();
+        //$app->setBasePath('/slim');
+        $route = $app->getRouteCollector();
+        $route->setCacheFile(
+            $container
+                ->get(Configuration::class)
+                ->getString('cache.route')
+        );
         return $app;
     },
     Twig::class => function (ContainerInterface $container) {
+        $config = $container->get(Configuration::class);
         return Twig::create(
-            $container
-                ->get(Configuration::class)
-                ->getArray('templates'),
+            $config->getString('templates'),
             [
-                $container
-                    ->get(Configuration::class)
-                    ->getArray('cache')
+                'cache' => $config->getString('cache.twig')
             ]
         );
     },

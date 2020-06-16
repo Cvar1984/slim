@@ -19,6 +19,7 @@ final class HomeController
                 'app_name' => 'Slim Twig',
                 'intro' => 'The flexible, fast, and secure template engine for PHP',
                 'copy_right' => 'Slim Framework, 2020',
+                'button' => 'Get Started',
                 'links' => [
                     'home' => '/home',
                     'profile' => '/profile',

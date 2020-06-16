@@ -1,5 +1,7 @@
 /vendor
-/cache
+!/cache
+/cache/*
+!/cache/.htaccess
 !/public/
 /public/*
 !public/assets/
