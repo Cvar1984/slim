@@ -17,18 +17,20 @@ return [
     },
     App::class => function (ContainerInterface $container) {
         AppFactory::setContainer($container);
-        $app = AppFactory::create();   
+        $app = AppFactory::create();
         return $app;
     },
-    Twig::class => function(ContainerInterface $container)
-    {
-        return Twig::create($container
-            ->get(Configuration::class)
-            ->getArray('templates'), [
+    Twig::class => function (ContainerInterface $container) {
+        return Twig::create(
+            $container
+                ->get(Configuration::class)
+                ->getArray('templates'),
+            [
                 $container
                     ->get(Configuration::class)
                     ->getArray('cache')
-            ]);
+            ]
+        );
     },
     ErrorMiddleware::class => function (ContainerInterface $container) {
         $app = $container->get(App::class);
