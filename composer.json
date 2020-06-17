@@ -17,6 +17,15 @@
             "url": "https://packagist.phpindonesia.id"
         }
     },
+    "scripts" : {
+      "clean": "find ./cache/ -not -name '.htaccess' -delete",
+      "csfix": [
+        "phpcf apply ./src/*/*",
+        "phpcf apply ./config/*",
+        "phpcs fix ./config",
+        "phpcs fix ./src"
+      ]
+    },
     "require": {
         "illuminate/database": "^7.8",
         "php-di/php-di": "^6.0",
