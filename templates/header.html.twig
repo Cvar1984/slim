@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
+  <head>
     <!-- Required meta tags -->
     <meta charset="utf-8" />
     <meta
@@ -19,7 +19,7 @@
     <link href="assets/local/css/product.css" rel="stylesheet" />
     <title>{{ title }}</title>
     <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-        <a class="navbar-brand" href="{{ links.home }}">{{ app_name }}</a>
+      <a class="navbar-brand" href="{{ links.home }}">{{ app_name }}</a>
       <button
         class="navbar-toggler"
         type="button"
@@ -33,10 +33,10 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarCollapse">
         <ul class="navbar-nav mr-auto">
-            {% for link in links %}
+          {% for link in links %}
           <li class="nav-item">
-              <a class="nav-link" href="{{ link }}">
-                  {{ link|replace({'/':' ', '-':' '}) }}
+            <a class="nav-link" href="{{ link }}">
+              {{ link|replace({'/':' ', '-':' '}) }}
             </a>
           </li>
           {% endfor %}
