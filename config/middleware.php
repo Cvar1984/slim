@@ -2,12 +2,12 @@
 
 use Slim\App;
 use Slim\Middleware\ErrorMiddleware;
-use Psr\Container\ContainerInterface;
+use Psr\Container\ContainerInterface as Container;
 use Selective\Config\Configuration;
 use Slim\Views\TwigMiddleware;
 use Slim\Views\Twig;
 
-return function (App $app, ContainerInterface $container) {
+return function (App $app, Container $container):void {
     // optional sub directory
     // Parse json, form data and xml
     $app->addBodyParsingMiddleware();

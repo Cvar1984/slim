@@ -9,31 +9,31 @@ use Odan\Twig\TwigAssetsExtension;
 //use Illuminate\Container\Container as IlluminateContainer;
 //use Illuminate\Database\Connection;
 //use Illuminate\Database\Connectors\ConnectionFactory;
-use Psr\Container\ContainerInterface;
+use Psr\Container\ContainerInterface as Container;
+use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
 use Selective\Config\Configuration;
 
 return [
     Configuration::class => function () {
         return new Configuration(require __DIR__ . '/settings.php');
     },
-    App::class => function (ContainerInterface $container) {
+    App::class => function (Container $container):App {
         AppFactory::setContainer($container);
         $app = AppFactory::create();
         //$app->setBasePath('/slim');
         $route = $app->getRouteCollector();
         $route->setCacheFile(
-            $container
-                ->get(Configuration::class)
-                ->getString('cache.route')
+            $container->get(Configuration::class)->getString('cache.route')
         );
         return $app;
     },
-    Twig::class => function (ContainerInterface $container) {
+    Twig::class => function (Container $container):Twig {
         $config = $container->get(Configuration::class);
         $twig = Twig::create(
             $config->getString('templates'),
             [
-                'cache' => $config->getString('cache.twig')
+                'cache' => $config->getString('cache.twig'),
             ]
         );
 
@@ -46,10 +46,12 @@ return [
         $env = $twig->getEnvironment();
 
         // Add Twig extensions
-        $twig->addExtension(new TwigAssetsExtension($env, $config->getArray('assets')));
+        $twig->addExtension(
+            new TwigAssetsExtension($env, $config->getArray('assets'))
+        );
         return $twig;
     },
-    ErrorMiddleware::class => function (ContainerInterface $container) {
+    ErrorMiddleware::class => function (Container $container):ErrorMiddleware {
         $app = $container->get(App::class);
         $settings = $container
             ->get(Configuration::class)
@@ -63,7 +65,7 @@ return [
             (bool)$settings['log_error_details']
         );
     },
-    //    PhpRenderer::class => function(ContainerInterface $container) {
+    //    PhpRenderer::class => function(Container $container) {
     //        $templateVariables = [
     //            'app_name' => 'Slim Twig',
     //            'date' => date('Y'),
@@ -76,7 +78,7 @@ return [
     //        return new PhpRenderer('../templates', $templateVariables);
     //    },
     // Database connection
-    //    Connection::class => function (ContainerInterface $container) {
+    //    Connection::class => function (Container $container) {
     //        $factory = new ConnectionFactory(new IlluminateContainer());
     //
     //        $connection = $factory->make($container
@@ -88,7 +90,7 @@ return [
     //
     //        return $connection;
     //    },
-    //    PDO::class => function (ContainerInterface $container) {
+    //    PDO::class => function (Container $container) {
     //        return $container->get(Connection::class)->getPdo();
     //    },
 ];
