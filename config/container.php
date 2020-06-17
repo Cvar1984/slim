@@ -5,6 +5,7 @@ use Slim\Factory\AppFactory;
 use Slim\Middleware\ErrorMiddleware;
 //use Slim\Views\PhpRenderer;
 use Slim\Views\Twig;
+use Odan\Twig\TwigAssetsExtension;
 //use Illuminate\Container\Container as IlluminateContainer;
 //use Illuminate\Database\Connection;
 //use Illuminate\Database\Connectors\ConnectionFactory;
@@ -29,12 +30,24 @@ return [
     },
     Twig::class => function (ContainerInterface $container) {
         $config = $container->get(Configuration::class);
-        return Twig::create(
+        $twig = Twig::create(
             $config->getString('templates'),
             [
                 'cache' => $config->getString('cache.twig')
             ]
         );
+
+        $loader = $twig->getLoader();
+
+        if ($loader instanceof FilesystemLoader) {
+            $loader->addPath($config->getString('public'), 'public');
+        }
+
+        $env = $twig->getEnvironment();
+
+        // Add Twig extensions
+        $twig->addExtension(new TwigAssetsExtension($env, $config->getArray('assets')));
+        return $twig;
     },
     ErrorMiddleware::class => function (ContainerInterface $container) {
         $app = $container->get(App::class);

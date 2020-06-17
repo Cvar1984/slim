@@ -11,13 +11,21 @@ date_default_timezone_set('Asia/Jakarta');
 $settings = [];
 
 // Path settings
-$settings['base_url'] = 'https://localhost:8080';
+$settings['base_url'] = 'http://localhost:8080';
 $settings['root'] = dirname(__DIR__);
 $settings['public'] = $settings['root'] . '/public';
 $settings['templates'] = $settings['root'] . '/templates';
 $settings['cache'] = [
     'twig' => $settings['root'] . '/cache',
     'route' => $settings['root'] . '/cache/route_cache.php'
+];
+
+$settings['assets'] = [
+    // Public assets cache directory
+    'path' => $settings['public'] . '/assets/local/cache',
+    'url_base_path' => $settings['base_url'] . '/assets/local/cache/',
+    //  Should be set to 1 (enabled) in production
+    'minify' => 1,
 ];
 
 // Error Handling Middleware settings

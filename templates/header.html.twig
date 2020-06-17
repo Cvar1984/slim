@@ -10,13 +10,15 @@
 
     <!-- Bootstrap CSS -->
     <!-- We need to use absolute path using twig -->
-    <link rel="stylesheet" href="assets/bootstrap/dist/css/bootstrap.min.css" />
     <link
       href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css"
       rel="stylesheet"
     />
 
-    <link href="assets/local/css/product.css" rel="stylesheet" />
+    {{ assets({files: [
+    'assets/local/css/product.css',
+    'assets/bootstrap/dist/css/bootstrap.min.css'
+    ], rel:'stylesheet'}) }}
     <title>{{ title }}</title>
     <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
       <a class="navbar-brand" href="{{ links.home }}">{{ app_name }}</a>

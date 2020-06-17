@@ -45,11 +45,10 @@
 </footer>
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-<!-- We need to use absolute path using twig -->
-<script src="assets/jquery/dist/jquery.min.js"></script>
-<script src="assets/popper.js/dist/popper.min.js"></script>
-<script src="assets/bootstrap/dist/js/bootstrap.min.js"></script>
-<script src="assets/rellax/rellax.min.js"></script>
+{{ assets({files:['assets/jquery/dist/jquery.min.js']}) }}
+{{ assets({files:['assets/popper.js/dist/popper.min.js']}) }}
+{{ assets({files:['assets/bootstrap/dist/js/bootstrap.min.js']}) }}
+{{ assets({files:['assets/rellax/rellax.min.js']}) }}
 
 <script>
   // This is the default setting

@@ -13,7 +13,7 @@ final class NotFoundController
         $view = \Slim\Views\Twig::fromRequest($request);
         $view->render(
             $response,
-            'home.html',
+            'home.html.twig',
             [
                 'title' => 'Page can\'t be found',
                 'app_name' => 'Slim Twig',

@@ -13,7 +13,7 @@ final class HomeController
         $view = \Slim\Views\Twig::fromRequest($request);
         $view->render(
             $response,
-            'home.html',
+            'home.html.twig',
             [
                 'title' => 'Home pages',
                 'app_name' => 'Slim Twig',
