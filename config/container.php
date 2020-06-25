@@ -6,25 +6,25 @@ use Slim\Middleware\ErrorMiddleware;
 //use Slim\Views\PhpRenderer;
 use Slim\Views\Twig;
 use Odan\Twig\TwigAssetsExtension;
-//use Illuminate\Container\Container as IlluminateContainer;
-//use Illuminate\Database\Connection;
-//use Illuminate\Database\Connectors\ConnectionFactory;
+use Illuminate\Container\Container as IlluminateContainer;
+use Illuminate\Database\Connection;
+use Illuminate\Database\Connectors\ConnectionFactory;
 use Psr\Container\ContainerInterface as Container;
-use Psr\Http\Message\ServerRequestInterface as Request;
-use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
 use Selective\Config\Configuration;
 
 return [
-    Configuration::class => function () {
+    Configuration::class => function ():Configuration {
         return new Configuration(require __DIR__ . '/settings.php');
     },
     App::class => function (Container $container):App {
         AppFactory::setContainer($container);
         $app = AppFactory::create();
-        //$app->setBasePath('/slim');
+        //$app->setBasePath('/Dawn-Wave-Plaza');
         $route = $app->getRouteCollector();
         $route->setCacheFile(
-            $container->get(Configuration::class)->getString('cache.route')
+            $container
+                ->get(Configuration::class)
+                ->getString('cache.route')
         );
         return $app;
     },
@@ -33,7 +33,7 @@ return [
         $twig = Twig::create(
             $config->getString('templates'),
             [
-                'cache' => $config->getString('cache.twig'),
+                //'cache' => $config->getString('cache.twig'),
             ]
         );
 
@@ -65,7 +65,8 @@ return [
             (bool)$settings['log_error_details']
         );
     },
-    //    PhpRenderer::class => function(Container $container) {
+    //    PhpRenderer::class => function(Container $container):PhpRenderer
+    //    {
     //        $templateVariables = [
     //            'app_name' => 'Slim Twig',
     //            'date' => date('Y'),
@@ -78,19 +79,21 @@ return [
     //        return new PhpRenderer('../templates', $templateVariables);
     //    },
     // Database connection
-    //    Connection::class => function (Container $container) {
-    //        $factory = new ConnectionFactory(new IlluminateContainer());
-    //
-    //        $connection = $factory->make($container
-    //                              ->get(Configuration::class)
-    //                              ->getArray('db'));
-    //
-    //        // Disable the query log to prevent memory issues
-    //        $connection->disableQueryLog();
-    //
-    //        return $connection;
-    //    },
-    //    PDO::class => function (Container $container) {
-    //        return $container->get(Connection::class)->getPdo();
-    //    },
+    Connection::class => function (Container $container):Connection {
+        $factory = new ConnectionFactory(new IlluminateContainer());
+
+        $connection = $factory->make(
+            $container
+                ->get(Configuration::class)
+                ->getArray('db')
+        );
+
+        // Disable the query log to prevent memory issues
+        $connection->disableQueryLog();
+
+        return $connection;
+    },
+    PDO::class => function (Container $container):PDO {
+        return $container->get(Connection::class)->getPdo();
+    },
 ];
