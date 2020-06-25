@@ -23,7 +23,7 @@ return function (App $app, Container $container):void {
                 return $handler->handle($request);
             } catch (HttpNotFoundException  $e) {
                 $response = (new Response())->withStatus(404);
-                $view = \Slim\Views\Twig::fromRequest($request);
+                $view = Twig::fromRequest($request);
                 $view->render(
                     $response,
                     'home.html.twig',
