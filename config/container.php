@@ -1,10 +1,12 @@
 <?php
 
+// this container replace original middlewares
 use Slim\App;
 use Slim\Factory\AppFactory;
 use Slim\Middleware\ErrorMiddleware;
 //use Slim\Views\PhpRenderer;
 use Slim\Views\Twig;
+use Slim\Views\TwigMiddleware;
 use Odan\Twig\TwigAssetsExtension;
 use Illuminate\Container\Container as IlluminateContainer;
 use Illuminate\Database\Connection;
@@ -51,8 +53,10 @@ return [
         );
         return $twig;
     },
-    ErrorMiddleware::class => function (Container $container):ErrorMiddleware {
-        $app = $container->get(App::class);
+    TwigMiddleware::class => function (App $app, Container $container) {
+        return TwigMiddleware::create($app, $container->get(Twig::class));
+    },
+    ErrorMiddleware::class => function (App $app, Container $container):ErrorMiddleware {
         $settings = $container
             ->get(Configuration::class)
             ->getArray('error_handler_middleware');
@@ -65,19 +69,6 @@ return [
             (bool)$settings['log_error_details']
         );
     },
-    //    PhpRenderer::class => function(Container $container):PhpRenderer
-    //    {
-    //        $templateVariables = [
-    //            'app_name' => 'Slim Twig',
-    //            'date' => date('Y'),
-    //            'link' => array(
-    //                'home' => '/home',
-    //                'profile' => '/profile'
-    //            ),
-    //        ];
-    //
-    //        return new PhpRenderer('../templates', $templateVariables);
-    //    },
     // Database connection
     Connection::class => function (Container $container):Connection {
         $factory = new ConnectionFactory(new IlluminateContainer());
@@ -96,4 +87,17 @@ return [
     PDO::class => function (Container $container):PDO {
         return $container->get(Connection::class)->getPdo();
     },
+    /* PhpRenderer::class => function():PhpRenderer */
+    /* { */
+    /*     $templateVariables = [ */
+    /*         'app_name' => 'Slim Twig', */
+    /*         'date' => date('Y'), */
+    /*         'link' => array( */
+    /*             'home' => '/home', */
+    /*             'profile' => '/profile' */
+    /*         ), */
+    /*     ]; */
+
+    /*     return new PhpRenderer('../templates', $templateVariables); */
+    /* }, */
 ];
